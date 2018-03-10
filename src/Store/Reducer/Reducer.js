@@ -2,7 +2,8 @@ import ActionTypes from '../Constant/constant';
 
 const INITIAL_STATE = {
     userName: 'Haider',
-    userInfo : []
+    userInfo : [],
+    currentUser : []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,6 +17,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 userInfo: action.payload
+            })
+            case ActionTypes.CURRENTUSER:
+            return ({
+                ...state,
+                currentUser: action.payload
             })
         default:
             return state;

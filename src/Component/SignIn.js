@@ -1,12 +1,65 @@
 import React, { Component } from 'react';
+import firebase from 'firebase'
+import { connect } from 'react-redux'
+import { signinAction , authWithFBorGoogle } from '../Store/Action/action'
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { Container, Header, Left, Body, Right, Title, Item, Input, Icon, Picker, Form, Item as FormItem } from 'native-base';
 import { StyleSheet, View, Image, Text, AppRegistry, Alert, TextInput, Button, ScrollView, TouchableOpacity } from 'react-native';
 // import { Dropdown } from 'react-native-material-dropdown';
+import FBSDK, { LoginManager, AccessToken } from 'react-native-fbsdk';
 class SignIn extends Component<{}> {
     constructor(props) {
         super(props);
+        this.state = {
+            email: '',
+            password: ''
+        }
     }
+     _loginWithGoogle() {
+        let that = this;
+        GoogleSignin.configure({
+            iosClientId: '781554659331-chde550j1hkdr937bsvfiot4esrtm3om.apps.googleusercontent.com', // only for iOS
+        })
+            .then(() => {
+                let thatIs = that;
+                GoogleSignin.signIn()
+                    .then((accessTokenData) => {
+                        console.log(accessTokenData, 'signin++++++++++++');
+                        const credential = firebase.auth.GoogleAuthProvider.credential(accessTokenData);
+                        thatIs.props.authWithFBorGoogless(credential);
+                    })
+                    .catch((err) => {
+                        console.log('WRONG SIGNIN----------', err);
+                    })
+                    // .done();
+            });
+    }
+    _loginWithFB() {
+        let that = this;
+        LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
+            function (result) {
+                if (result.isCancelled) {
+                    alert('Login cancelled');
+                } else {
+                    let thatIs = that;
+                    AccessToken.getCurrentAccessToken()
+                        .then((accessTokenData) => {
+                            console.log(accessTokenData, 'accessTokenData')
+                            const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData.accessToken);
+                            console.log(credential)
+                            thatIs.props.authWithFBorGoogless(credential);
+                            thatIs.props.navigation.navigate('Profile')
 
+                        }, (error) => {
+                            console.log(error, 'some error occurred');
+                        })
+                }
+            },
+            function (error) {
+                alert('Login fail with error: ' + error);
+            }
+        );
+    }
     render() {
 
         return (
@@ -20,7 +73,12 @@ class SignIn extends Component<{}> {
                             </TouchableOpacity>
                         </Body>
                         <Right>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={
+                                () => {
+                                    console.log('go to login page')
+                                    this.props.navigation.navigate('signUp')
+                                }
+                            }>
                                 <Text style={{ fontSize: 12, color: 'yellow' }}>CREATE AN ACCOUNT </Text>
                             </TouchableOpacity>
                         </Right>
@@ -48,6 +106,11 @@ class SignIn extends Component<{}> {
                         {/* <Text style={styles.inputText}>Email Address</Text> */}
                         <Item style={styles.input}>
                             <Input
+                                onChangeText={(text) => {
+                                    console.log(text)
+                                    this.setState({ email: text })
+                                }}
+                                value={this.state.text}
                                 placeholder="Email"
                                 placeholderStyle={{ fontSize: 10 }}
                                 placeholderTextColor="#B2B2B2"
@@ -64,6 +127,12 @@ class SignIn extends Component<{}> {
                         {/* <Text style={styles.inputText}>Confirm Password</Text> */}
                         <Item style={styles.input}>
                             <Input
+                                onChangeText={(text) => {
+                                    console.log(text)
+                                    this.setState({ password: text })
+                                }}
+                                secureTextEntry={true}
+                                value={this.state.text}
                                 placeholder="Password"
                                 placeholderStyle={{ fontSize: 10 }}
                                 placeholderTextColor="#B2B2B2"
@@ -78,26 +147,38 @@ class SignIn extends Component<{}> {
                     <View style={styles.inputDiv}>
                         <TouchableOpacity
                             style={styles.signUpBtn}
+                            onPress={
+                                    () => {
+                                        console.log(this.state)
+                                         this.props.getUserSignIn(this.state)
+                                         {/* this.props.navigation.navigate('Profile')  */}
+                                    }
+                                }
                         >
-                            <Text style={styles.signUpBtnTxt}>SIGN IN </Text>
+                            <Text style={styles.signUpBtnTxt}
+                                >SIGN IN </Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style = {{
-                        justifyContent : 'center',
-                        alignItems : 'center',
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
                     }} >
-                        <Text style = {{color  : '#C9CACF' , marginVertical : 5 , fontWeight : 'bold'}}>OR SIGN IN WITH</Text>
-                        <View style = {{flexDirection : 'row' , marginTop : 12 , paddingVertical : 8 }}>
-                            <TouchableOpacity>
-                            <Image style={{  width: 48, height: 48 , marginRight : 4}}
-                                source={require('../Images/Google+.png')}
-                            />
+                        <Text style={{ color: '#C9CACF', marginVertical: 5, fontWeight: 'bold' }}>OR SIGN IN WITH</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 12, paddingVertical: 8 }}>
+                            <TouchableOpacity
+                            onPress={this._loginWithGoogle.bind(this)}
+                                >
+                                <Image style={{ width: 48, height: 48, marginRight: 4 }}
+                                    source={require('../Images/Google+.png')}
+                                />
                             </TouchableOpacity>
-                             <TouchableOpacity>
-                            <Image style={{ width: 48, height: 48, marginLeft : 4 }}
-                                source={require('../Images/facebook.png')}
-                            />
+                            <TouchableOpacity
+                                onPress={this._loginWithFB.bind(this)}
+                            >
+                                <Image style={{ width: 48, height: 48, marginLeft: 4 }}
+                                    source={require('../Images/facebook.png')}
+                                />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -105,6 +186,22 @@ class SignIn extends Component<{}> {
             </View>
         )
     }
+}
+function mapStateToProp(state) {
+    console.log(state, 'state')
+    return ({
+
+    })
+}
+function mapDispatchToProp(dispatch) {
+    return ({
+        getUserSignIn: (data) => {
+            dispatch(signinAction(data))
+        },
+         authWithFBorGoogless: (credential) => {
+            dispatch(authWithFBorGoogle(credential))
+        }
+    })
 }
 const styles = StyleSheet.create({
     header: {
@@ -186,5 +283,5 @@ const styles = StyleSheet.create({
     }
 })
 
-
-export default SignIn
+// AppRegistry.registerComponent('SignIn', () => SignIn);
+export default connect(mapStateToProp, mapDispatchToProp)(SignIn)

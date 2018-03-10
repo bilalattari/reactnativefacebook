@@ -150,12 +150,14 @@ dependencies {
     exclude group: "com.google.android.gms"
     // conOverRideExistingModule = true 
 }
+compile(project(":react-native-google-signin")){         
+        exclude group: "com.google.android.gms" // very important
+    }
 compile(project(':react-native-fbsdk')) {
         exclude(group: 'com.facebook.android', module: 'facebook-android-sdk')
     }
-
+    compile "com.google.android.gms:play-services-auth:11.2.0"
     compile ("com.google.android.gms:play-services-vision:10.2.0")
-    // force = true; 
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile('com.facebook.android:facebook-android-sdk:4.22.1')
     compile "com.android.support:appcompat-v7:23.0.1"

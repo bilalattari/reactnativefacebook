@@ -20,7 +20,7 @@ class Result extends Component<{}> {
                             <View style={{
                                 alignSelf: 'flex-end', position: 'absolute', borderBottomColor: '#eaedf2',
                                 borderBottomWidth: 2, height: '50%', width: '72%', marginLeft: 5,
-                                marginBottom: 8, fontWeight : 'bold'
+                                marginBottom: 8
                             }} />
                             <Text style={{
                                 paddingRight: 4, color: '#2a60ba', marginLeft: 5,

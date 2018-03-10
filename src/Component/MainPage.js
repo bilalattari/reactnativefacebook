@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  StyleSheet, View, Image  } from 'react-native';
-import { Container, Header, Left, Text , Body, Right, Button , Badge , Icon, Title , Content, Card, CardItem} from 'native-base';
+import { StyleSheet, View, Image, TouchableOpacity, AppRegistry } from 'react-native';
+import { Container, Header, Left, Text, Body, Right, Button, Badge, Icon, Title, Content, Card, CardItem } from 'native-base';
 class MainPage extends Component<{}> {
     constructor(props) {
         super(props);
@@ -8,42 +8,53 @@ class MainPage extends Component<{}> {
 
     render() {
         return (
-         <Container>
-        <Header style = {styles.stretch}>
-          <Left>
-            <Image source={require('../Images/signUp.png')}  />
-          </Left>
-          <Body >
-              <Button transparent  >
-              <Icon name='home' />
-              <Text>Mage Body</Text>
-          </Button>
-          </Body>
-          <Right>
-          <View>
-          <Button>
-              <Text>Mage</Text>
-          </Button>
-          </View>
-          </Right>
-        </Header>
-            <Content>
+
+            <View>
+                <Header style={{ backgroundColor: '#2196F3' }}>
+                    <Body>
+                        <TouchableOpacity >
+                            <Image
+                              source={require('../Images/mage_logo_menu.png')}
+                              style={{ width: '10%' , height : '10%' }}
+                            />
+
+                        </TouchableOpacity>
+                    </Body>
+                    <Right>
+                        <TouchableOpacity onPress={
+                            () => {
+                                console.log('go to login page')
+                                this.props.navigation.navigate('signUp')
+                            }
+                        }>
+                            <Text style={{ fontSize: 12, color: 'yellow' }}>CREATE AN ACCOUNT </Text>
+                        </TouchableOpacity>
+                    </Right>
+                </Header>
                 <View>
+                    
                     <Text>
-                        Bilal raza
-                    </Text>
+                        salam
+                   </Text>
+                   <View>
+                        <Image
+                              source={require('../Images/Question_header.png')}
+                              style={{ width: '10%' , height : '10%' }}
+                            />
+                   </View>
                 </View>
-             </Content>
-      </Container>
+
+            </View>
+
 
         )
     }
 }
 const styles = StyleSheet.create({
     stretch: {
-        backgroundColor : '#fff'
+        backgroundColor: '#fff'
     },
-    headerBody : {
+    headerBody: {
         marginLeft: 80
     }
 

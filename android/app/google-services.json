@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "856753555929",
+    "firebase_url": "https://reactnativesignup.firebaseio.com",
+    "project_id": "reactnativesignup",
+    "storage_bucket": "reactnativesignup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856753555929:android:5dbc1c850b51b0e2",
+        "android_client_info": {
+          "package_name": "com.billonative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856753555929-kprsjie5gjn4ct9vfqgp57ikobnnhvqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.billonative",
+            "certificate_hash": "9daa0e43a737de15e528a46194571538e2fdab5c"
+          }
+        },
+        {
+          "client_id": "856753555929-2qdugn635opos0nj7g53h7sm3pgfdbor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDykj3WIhrtu2w0c1sWNFuWQMPsDLW9OQg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856753555929-2qdugn635opos0nj7g53h7sm3pgfdbor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

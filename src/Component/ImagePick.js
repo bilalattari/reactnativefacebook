@@ -9,15 +9,63 @@ class ImagePick extends Component<{}> {
     }
 Image(){
     console.log('image')
+
+    var options = {
+  title: 'Select Avatar',
+  customButtons: [
+    {name: 'fb', title: 'Choose Photo from Facebook'},
+  ],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
+
+ImagePicker.launchCamera(options, (response)  => {
+  console.log('Response = ', response);
+});
+    // ImagePicker.launchImageLibrary(options, (response)  => {
+    //     console.log('Response = ', response);
+    // });
+}
+Images(){
+    console.log('image')
+
+    var options = {
+  title: 'Select Avatar',
+  customButtons: [
+    {name: 'fb', title: 'Choose Photo from Facebook'},
+  ],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
+
+    ImagePicker.launchImageLibrary(options, (response)  => {
+        console.log('Response = ', response);
+    });
 }
     render() {
         return (
-            <View >
+            <View  style = {{
+                    justifyContent : 'center',
+                    alignItems : 'center'
+                }}>
                 <Text>Image Picker</Text>
                 <TouchableOpacity
+                
                 onPress = {this.Image.bind(this)}
                 >
-                    Click Plz
+                   <Text>Cameraz</Text> 
+                   
+                </TouchableOpacity>
+                 <TouchableOpacity
+                
+                onPress = {this.Images.bind(this)}
+                >
+                   <Text>Gallery</Text> 
+                   
                 </TouchableOpacity>
             </View>
         )
